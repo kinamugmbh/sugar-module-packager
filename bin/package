@@ -16,9 +16,14 @@ use SugarModulePackager\PackageOutput;
 use SugarModulePackager\PackageUtils;
 
 if (empty($argv[1])) {
-    PackageOutput::message('Use '.$argv[0].' [version]');
+    PackageOutput::message('Use '.$argv[0].' [version] [environment]');
 } else {
-    PackageUtils::build($argv[1]);
+    if(empty($argv[2])){
+        PackageUtils::build($argv[1]);
+    }else{
+        PackageUtils::build($argv[1]);
+        PackageUtils::deploy($argv[1], $argv[2]);
+    }
 }
 
 exit(0);

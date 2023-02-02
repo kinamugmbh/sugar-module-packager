@@ -1,18 +1,16 @@
 {
-    "name": "esimonetti/sugar-module-packager",
+    "name": "kinamugmbh/sugar-module-packager",
     "description": "Utility to package Sugar customisations into module loadable packages",
     "type": "package",
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "Enrico Simonetti",
-            "email": "enrico.simonetti@gmail.com",
-            "homepage": "http://enricosimonetti.com"
+            "name": "Markus Ruckenbauer",
+            "email": "markus.ruckenbauer@kinamu.com"
         }
     ],
     "bin": [
-        "bin/package",
-        "bin/package-docker"
+        "bin/package"
     ],
     "require": {
         "php": ">=5.6"

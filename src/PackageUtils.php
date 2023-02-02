@@ -23,6 +23,7 @@ class PackageUtils
     protected static $config_directory = 'configuration';
     protected static $config_template_file = 'templates.php';
     protected static $config_installdefs_file = 'installdefs.php';
+    protected static $config_deployment_file = 'deployment.php';
     protected static $src_directory = 'src';
     protected static $pkg_directory = 'pkg';
     protected static $manifest_file = 'manifest.php';
@@ -162,6 +163,20 @@ class PackageUtils
         }
     
         return $manifest;
+    }
+
+    protected static function getDeployDefs($env){
+
+        if (is_dir(self::$config_directory) &&
+            file_exists(self::buildSimplePath(self::$config_directory, self::$config_deployment_file))) {
+            require(self::buildSimplePath(self::$config_directory, self::$config_deployment_file));
+        }
+
+        if(!isset($deployment) || empty($deployment[$env])){
+            return [];
+        }else{
+            return $deployment[$env];
+        }
     }
 
     protected static function getInstallDefs($manifest, $module_files_list)
@@ -333,6 +348,20 @@ class PackageUtils
                     }
                 }
             }
+        }
+    }
+
+    public static function deploy($version, $env)
+    {
+        $deploydefs = self::getDeployDefs($env);
+        $manifest = self::getManifest($version);
+
+        if(!empty($deploydefs)){
+            $zip = self::getZipName($manifest['id'] . '_' . $version);
+            $APIUtils = new SugarAPIUtils($deploydefs['url'],$deploydefs['user'],$deploydefs['pass']);
+            $APIUtils->deployPackge($zip);
+        }else{
+            PackageOutput::message('Provide environment');
         }
     }
 }
